@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>URL Shortener & File Hosting</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <div class="toggle-switch">
+            <input type="checkbox" id="toggleSwitch">
+            <label for="toggleSwitch">
+                <span class="toggle-text">Toggle Dark Mode</span>
+            </label>
+        </div>
+    </div>    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+
+    <h1>URL Shortener</h1>
+    <form action="{{ url_for('index') }}" method="post">
+        <input type="url" name="url" placeholder="Enter URL" required>
+        <button type="submit">Shorten URL</button>
+    </form>
+    {% if short_url %}
+        <p>Short URL: <a href="{{ short_url }}" target="_blank">{{ short_url }}</a></p>
+    {% endif %}
+
+    {% if short_urls %}
+        <h2>Historical Shortened URLs</h2>
+        <ul>
+            {% for short_url in short_urls %}
+                <li><a href="{{ short_url }}" target="_blank">{{ short_url }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h1>File Hosting</h1>
+      <form action="{{ url_for('file_upload') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Upload File</button>
+      </form>
+
+    {% if uploaded_file_url %}
+        <p>File URL: <a href="{{ uploaded_file_url }}" target="_blank">{{ uploaded_file_url }}</a></p>
+    {% endif %}
+
+    {% if file_urls %}
+        <h2>Uploaded Files</h2>
+        <ul>
+            {% for file_name, file_url in file_urls %}
+                <li><a href="{{ file_url }}" target="_blank">{{ file_name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
