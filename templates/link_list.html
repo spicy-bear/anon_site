@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Shortened URLs</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<script src="{{ url_for('static', filename='scripts.js') }}"></script>
+
+<body>
+<div class="main">
+<div id="dark-mode-toggle" class="dark-mode-toggle"></div>
+
+<div class="header">
+<a href="{{ url_for('index') }}" class="button" type="navigation">Index</a>
+<a href="{{ url_for('link_list') }}" class="button" type="navigation">URLs</a>
+<a href="{{ url_for('file_list') }}" class="button" type="navigation">Files</a>
+</div>
+
+  <div class="box">
+  <h1>Shortened URLs</h1>
+  <ul>
+    {% for short_url in short_urls %}
+    {% set short_id = short_url.split('/')[-1] %}
+    {% set original_url = redis.get(short_id).decode('utf-8') %}
+    <li><a href="{{ short_url }}">{{ short_url }}</a> - <a href="{{ original_url }}">{{ original_url }}</a></li>
+  {% endfor %}
+</ul>
+</div>
+</div>
+</body>
+</html>
